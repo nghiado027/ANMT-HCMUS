@@ -1,0 +1,57 @@
+=====================================================
+Mục đích việc đặt IP ảo cho switch là để kiểm tra các switch thông nhau không
+	VÍ DỤ
+	SW2(config)#int vlan 1
+	SW2(config-if)#ip add 10.0.0.2 255.255.255.0
+	SW2(config-if)#no shut
+	SW2(config-if)#end
+	
+	SW1(config)#int vlan 1
+	SW1(config-if)#ip add 10.0.0.1 255.255.255.0
+	SW1(config-if)#no shut
+	SW1(config-if)#end
+
+======================================================
+NAT là một kỹ thuật cho phép một hoặc nhiều địa chỉ IP nội miền chuyển đổi sang một hoặc nhiều địa chỉ IP ngoại miền.
+Ý nghĩa viết tắt của NAT là gì? NAT hay Network Address Translation giúp địa chỉ mạng cục bộ (Private) truy cập được đến mạng công cộng (Internet).
+
+server PT (path translation)
+
+
+======================================================
+Step by step configure VLAN:
+	1: Cấu hình IP, gateway, subnet mask cho các PC
+	2: Đặt ip ảo cho các SW để ping kiểm tra kết nối (có thể không cần)
+	3: Thêm VLAN trên các SW
+		+  	SW1#conf t
+			SW1(config)# vlan 10
+			SW1(config-vlan)# name K.CNTT
+		
+		+ show VLAN:
+			SW1# show vlan brief
+	4: Đưa các port của SW vào VLAN
+		+ 	SW1(config-if)#switchport access vlan 10
+		+ 	SW1(config-if)#end
+	5: Chuyển đường trunk của các SW sang mode trunk
+		+ 	SW1(config-if)#switchport mode trunk
+		
+	6: Cấu hình các port của router
+	7: Cấu hình các port của Core SW ở layer 3
+	8: Cấu hình IP (defaut GW) cho các VLAN ở Core SW ở layer 2
+		
+======================================================
+Configure Core Switch
+	Cấu hình interface nối giữa switch và router
+
+
+What does this “no switchport” command do:
+	The no switchport command puts the interface in L3 mode (known as "routed port") and makes it operate more like a router interface 
+	rather than a switch port. The ip address command assigns an IP address and network mask to the interface. Routed ports can be 
+	configured with a Layer 3 routing protocol.
+	
+========================================================
+Command kiểm tra cấu hình
+	Kiểm tra từng vlan: 		show ip interface vlan 10 (show ip, helper address)
+	Kiểm tra cấu hình vlan: 	show vlan brief
+	Kiểm tra cấu hình các int: 	show ip interface br
+	Kiểm tra đường trunk: 		show interface trunk
